@@ -1,0 +1,69 @@
+# ── .NET ──────────────────────────────────────────────────────────────────────
+bin/
+obj/
+*.user
+*.suo
+*.userosscache
+*.sln.docstates
+.vs/
+TestResults/
+*.nupkg
+*.snupkg
+.dotnet/
+project.lock.json
+project.fragment.lock.json
+
+# Publish output
+publish/
+**/Properties/PublishProfiles/
+
+# EF Core migrations snapshot (keep migrations, ignore generated files)
+# Do NOT ignore Migrations/ — migration classes must be committed
+
+# ── SQLite databases ──────────────────────────────────────────────────────────
+*.db
+*.db-shm
+*.db-wal
+
+# ── Node.js / React ───────────────────────────────────────────────────────────
+node_modules/
+dist/
+.cache/
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Local env overrides — keep .env.development (not sensitive), ignore local overrides
+.env.local
+.env.*.local
+
+# ── IDEs ──────────────────────────────────────────────────────────────────────
+# Visual Studio Code
+.vscode/
+
+# JetBrains Rider
+.idea/
+*.sln.iml
+
+# Visual Studio
+*.aps
+*.ncb
+*.opendb
+*.opensdf
+
+# ── OS ────────────────────────────────────────────────────────────────────────
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+
+# Windows
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+$RECYCLE.BIN/
+
+# ── Docker ────────────────────────────────────────────────────────────────────
+# Keep docker-compose.yml and Dockerfiles — ignore any local override
+docker-compose.override.yml

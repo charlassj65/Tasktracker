@@ -1,0 +1,108 @@
+.tableWrapper {
+  overflow-x: auto;
+  border-radius: var(--radius-md);
+  border: 1px solid var(--color-border);
+  box-shadow: var(--shadow-sm);
+}
+
+.table {
+  width: 100%;
+  border-collapse: collapse;
+  background: var(--color-surface);
+  font-size: 14px;
+}
+
+.table thead {
+  background: #f8fafc;
+}
+
+.table th {
+  padding: 11px 16px;
+  text-align: left;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--color-text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  border-bottom: 1px solid var(--color-border);
+}
+
+.table td {
+  padding: 14px 16px;
+  border-bottom: 1px solid var(--color-border);
+  vertical-align: middle;
+  color: var(--color-text);
+}
+
+.table tbody tr:last-child td {
+  border-bottom: none;
+}
+
+.table tbody tr:hover td {
+  background: var(--color-surface-hover);
+}
+
+.titleCell {
+  font-weight: 500;
+  max-width: 220px;
+}
+
+.descCell {
+  color: var(--color-text-secondary);
+  max-width: 280px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.dateCell {
+  white-space: nowrap;
+  color: var(--color-text-secondary);
+}
+
+.none {
+  color: var(--color-text-muted);
+}
+
+.btnGroup {
+  display: flex;
+  gap: 6px;
+}
+
+.btnEdit,
+.btnDelete {
+  padding: 5px 14px;
+  border-radius: var(--radius-sm);
+  font-size: 13px;
+  font-weight: 500;
+  border: none;
+  transition: background 0.15s;
+}
+
+.btnEdit {
+  background: var(--color-primary-light);
+  color: var(--color-primary);
+}
+
+.btnEdit:hover {
+  background: #dde3ff;
+}
+
+.btnDelete {
+  background: var(--color-danger-light);
+  color: var(--color-danger);
+}
+
+.btnDelete:hover {
+  background: #fed7d7;
+}
+
+.empty {
+  text-align: center;
+  padding: 60px 24px;
+  color: var(--color-text-muted);
+  background: var(--color-surface);
+  border-radius: var(--radius-md);
+  border: 1px dashed var(--color-border);
+  font-size: 15px;
+}

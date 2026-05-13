@@ -1,0 +1,43 @@
+services:
+
+  # ── API ─────────────────────────────────────────────────────────────────────
+  api:
+    build:
+      context: ./src/api
+      dockerfile: Dockerfile
+    container_name: ocas-tracker-api
+    ports:
+      - "5200:8080"          # host:container  — API on http://localhost:5200
+    environment:
+      ASPNETCORE_ENVIRONMENT: Development          # enables Swagger UI
+      ConnectionStrings__DefaultConnection: "Data Source=/data/tasks.db"
+      Serilog__MinimumLevel__Default: Information
+    volumes:
+      - sqlite-data:/data    # persists the SQLite database across restarts
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD-SHELL", "curl -f http://localhost:8080/tasks || exit 1"]
+      interval: 15s
+      timeout: 5s
+      retries: 3
+      start_period: 10s
+
+  # ── UI ──────────────────────────────────────────────────────────────────────
+  ui:
+    build:
+      context: ./src/ui
+      dockerfile: Dockerfile
+      args:
+        VITE_API_BASE_URL: http://localhost:5200  # baked into the JS bundle
+    container_name: ocas-tracker-ui
+    ports:
+      - "3000:80"            # host:container  — UI on http://localhost:3000
+    depends_on:
+      api:
+        condition: service_healthy
+    restart: unless-stopped
+
+# ── Volumes ───────────────────────────────────────────────────────────────────
+volumes:
+  sqlite-data:
+    name: ocas-tracker-sqlite
