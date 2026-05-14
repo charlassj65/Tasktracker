@@ -9,23 +9,20 @@ using TaskTracker.Domain.Enums;
 namespace TaskTracker.Infrastructure.AI;
 
 /// <summary>
-/// Calls the Anthropic Messages API to produce a natural-language task summary.
-/// Activated automatically when AiProvider:ApiKey is set in configuration.
-/// Falls back to a structured prompt if the API call fails.
+/// Calls an external AI API to produce a natural-language task summary.
+/// Activated automatically when AiProvider:Type is "External" and an ApiKey is set.
+/// Falls back to a local structured summary if the API call fails.
 /// </summary>
-public class ClaudeAiSummaryProvider : IAiSummaryProvider
+public class ExternalAiSummaryProvider : IAiSummaryProvider
 {
     private readonly HttpClient _httpClient;
     private readonly AiProviderSettings _settings;
-    private readonly ILogger<ClaudeAiSummaryProvider> _logger;
+    private readonly ILogger<ExternalAiSummaryProvider> _logger;
 
-    private const string AnthropicApiVersion = "2023-06-01";
-    private const string MessagesEndpoint = "https://api.anthropic.com/v1/messages";
-
-    public ClaudeAiSummaryProvider(
+    public ExternalAiSummaryProvider(
         HttpClient httpClient,
         AiProviderSettings settings,
-        ILogger<ClaudeAiSummaryProvider> logger)
+        ILogger<ExternalAiSummaryProvider> logger)
     {
         _httpClient = httpClient;
         _settings = settings;
@@ -35,7 +32,6 @@ public class ClaudeAiSummaryProvider : IAiSummaryProvider
     public async Task<string> SummarizeTasksAsync(IEnumerable<TaskItem> tasks)
     {
         var taskList = tasks.ToList();
-
         var prompt = BuildPrompt(taskList);
 
         try
@@ -50,9 +46,8 @@ public class ClaudeAiSummaryProvider : IAiSummaryProvider
                 }
             };
 
-            using var request = new HttpRequestMessage(HttpMethod.Post, MessagesEndpoint);
+            using var request = new HttpRequestMessage(HttpMethod.Post, _settings.Endpoint);
             request.Headers.Add("x-api-key", _settings.ApiKey);
-            request.Headers.Add("anthropic-version", AnthropicApiVersion);
             request.Content = JsonContent.Create(requestBody);
 
             using var response = await _httpClient.SendAsync(request);
@@ -70,7 +65,7 @@ public class ClaudeAiSummaryProvider : IAiSummaryProvider
         }
         catch (Exception ex)
         {
-            _logger.LogWarning(ex, "Claude API call failed, falling back to local summary");
+            _logger.LogWarning(ex, "External AI API call failed, falling back to local summary");
             return FallbackSummary(taskList);
         }
     }

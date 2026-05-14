@@ -71,14 +71,14 @@ public static class ServiceCollectionExtensions
             .GetSection(AiProviderSettings.SectionName)
             .Get<AiProviderSettings>() ?? new AiProviderSettings();
 
-        var useClaudeProvider =
-            settings.Type.Equals("Claude", StringComparison.OrdinalIgnoreCase) &&
+        var useExternalProvider =
+            settings.Type.Equals("External", StringComparison.OrdinalIgnoreCase) &&
             !string.IsNullOrWhiteSpace(settings.ApiKey);
 
-        if (useClaudeProvider)
+        if (useExternalProvider)
         {
             services.AddSingleton(settings);
-            services.AddHttpClient<IAiSummaryProvider, ClaudeAiSummaryProvider>();
+            services.AddHttpClient<IAiSummaryProvider, ExternalAiSummaryProvider>();
         }
         else
         {

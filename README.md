@@ -204,6 +204,8 @@ Swagger UI: `http://localhost:5200/swagger` *(Development mode only)*
 ### Business rule
 
 A task **cannot** be marked as `Done` if the title is empty or whitespace.  
+This rule is intentionally scoped to `Done` status only — tasks with status `Todo` or `InProgress` are not subject to this restriction, matching the assignment spec exactly.
+
 Response when the rule is violated:
 
 ```json
